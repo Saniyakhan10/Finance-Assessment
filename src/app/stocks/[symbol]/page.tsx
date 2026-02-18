@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { ArrowLeft, TrendingUp, TrendingDown, Building2, Globe, DollarSign } from 'lucide-react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import StockChart from '@/components/StockChart';
 
 export default async function StockDetailsPage({ params }: { params: { symbol: string } }) {
     // Decode the symbol because it might contain URL-encoded characters (like %3A for :)
@@ -69,48 +69,7 @@ export default async function StockDetailsPage({ params }: { params: { symbol: s
 
                     {/* Chart Section */}
                     <div className="glass-panel p-6 rounded-2xl mb-12 border border-white/10 bg-black/50">
-                        <div className="h-[400px] w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <AreaChart data={stockData}>
-                                    <defs>
-                                        <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor={isPositive ? '#10B981' : '#EF4444'} stopOpacity={0.3} />
-                                            <stop offset="95%" stopColor={isPositive ? '#10B981' : '#EF4444'} stopOpacity={0} />
-                                        </linearGradient>
-                                    </defs>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
-                                    <XAxis
-                                        dataKey="date"
-                                        stroke="#666"
-                                        tick={{ fill: '#666', fontSize: 12 }}
-                                        tickLine={false}
-                                        axisLine={false}
-                                        minTickGap={30}
-                                    />
-                                    <YAxis
-                                        stroke="#666"
-                                        tick={{ fill: '#666', fontSize: 12 }}
-                                        tickLine={false}
-                                        axisLine={false}
-                                        domain={['auto', 'auto']}
-                                        tickFormatter={(val) => `₹${val}`}
-                                    />
-                                    <Tooltip
-                                        contentStyle={{ backgroundColor: '#111', border: '1px solid #333', borderRadius: '8px' }}
-                                        labelStyle={{ color: '#999', marginBottom: '4px' }}
-                                        formatter={(value: number) => [`₹${value.toFixed(2)}`, 'Price']}
-                                    />
-                                    <Area
-                                        type="monotone"
-                                        dataKey="close"
-                                        stroke={isPositive ? '#10B981' : '#EF4444'}
-                                        strokeWidth={2}
-                                        fillOpacity={1}
-                                        fill="url(#colorPrice)"
-                                    />
-                                </AreaChart>
-                            </ResponsiveContainer>
-                        </div>
+                        <StockChart stockData={stockData} isPositive={isPositive} />
                     </div>
 
                     {/* Stats Grid */}
