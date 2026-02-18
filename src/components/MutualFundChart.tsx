@@ -66,7 +66,7 @@ export default function MutualFundChart({ data }: MutualFundChartProps) {
                     <Tooltip
                         contentStyle={{ backgroundColor: '#111', border: '1px solid #333', borderRadius: '8px' }}
                         labelStyle={{ color: '#999', marginBottom: '4px' }}
-                        formatter={(value: number) => [`₹${value.toFixed(4)}`, 'NAV']}
+                        formatter={(value: number | undefined) => value !== undefined ? [`₹${value.toFixed(4)}`, 'NAV'] : ['', 'NAV']}
                         labelFormatter={(label) => {
                             const d = new Date(label);
                             return d.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' });
