@@ -1,12 +1,15 @@
-'use client';
-
+import { fetchMutualFundsList } from '@/lib/api';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { ArrowLeft, PieChart, TrendingUp, Shield, Plus, ArrowRight, Filter } from 'lucide-react';
+import AllMutualFundsList from '@/components/AllMutualFundsList';
+import SIPCalculator from '@/components/SIPCalculator';
 
-export default function MutualFundsPage() {
-    const funds = [
+export default async function MutualFundsPage() {
+    const initialFunds = await fetchMutualFundsList(50); // Fetch top 50 initial list
+
+    const featuredFunds = [
         {
             id: 'hdfc-equity-growth',
             name: 'HDFC Equity Growth Fund',
@@ -46,77 +49,29 @@ export default function MutualFundsPage() {
             nav: '145.80',
             fundSize: '18,500 Cr'
         },
-        {
-            id: 'axis-bluechip',
-            name: 'Axis Bluechip Fund',
-            category: 'Large Cap',
-            risk: 'High',
-            rating: 4,
-            minSip: '500',
-            returns1Y: '11.5%',
-            returns3Y: '13.2%',
-            returns5Y: '12.1%',
-            nav: '48.90',
-            fundSize: '32,000 Cr'
-        },
-        {
-            id: 'nippon-india-small-cap',
-            name: 'Nippon India Small Cap Fund',
-            category: 'Small Cap',
-            risk: 'Very High',
-            rating: 5,
-            minSip: '100',
-            returns1Y: '32.1%',
-            returns3Y: '35.4%',
-            returns5Y: '28.9%',
-            nav: '112.45',
-            fundSize: '28,000 Cr'
-        },
-        {
-            id: 'kotak-emerging-equity',
-            name: 'Kotak Emerging Equity Fund',
-            category: 'Mid Cap',
-            risk: 'High',
-            rating: 4,
-            minSip: '1000',
-            returns1Y: '21.8%',
-            returns3Y: '24.2%',
-            returns5Y: '19.5%',
-            nav: '89.60',
-            fundSize: '35,000 Cr'
-        },
     ];
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-black text-white selection:bg-emerald-500/30">
             <Navbar />
 
-            <main className="pt-24 pb-16 px-4">
+            <main className="pt-32 pb-16 px-4">
                 <div className="max-w-7xl mx-auto">
                     <Link href="/" className="inline-flex items-center text-gray-400 hover:text-white mb-8 transition-colors">
                         <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
                     </Link>
 
-                    <header className="mb-12">
-                        <h1 className="text-4xl font-bold mb-4">Invest in <span className="text-gradient">Mutual Funds</span></h1>
+                    <header className="mb-12 text-center md:text-left">
+                        <h1 className="text-4xl md:text-5xl font-bold mb-4">Invest in <span className="text-gradient">Mutual Funds</span></h1>
                         <p className="text-gray-400 text-lg max-w-2xl">
                             Choose from top-rated funds handpicked by experts. Start your SIP journey today.
                         </p>
                     </header>
 
-                    {/* Filters (Visual only for now) */}
-                    <div className="flex flex-wrap gap-4 mb-8">
-                        <button className="px-4 py-2 rounded-full bg-emerald-600 text-white text-sm font-medium">All Funds</button>
-                        <button className="px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors">Large Cap</button>
-                        <button className="px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors">Mid Cap</button>
-                        <button className="px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors">Small Cap</button>
-                        <button className="px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-medium transition-colors flex items-center gap-2">
-                            <Filter className="w-4 h-4" /> More Filters
-                        </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-4">
-                        {funds.map((fund) => (
+                    {/* Featured Funds */}
+                    <h2 className="text-2xl font-bold text-white mb-6">Featured Funds</h2>
+                    <div className="grid grid-cols-1 gap-4 mb-16">
+                        {featuredFunds.map((fund) => (
                             <div key={fund.id} className="glass-panel p-6 rounded-xl hover:bg-white/5 transition-colors group border border-white/5">
                                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-6">
                                     <div className="flex-1">
@@ -165,6 +120,21 @@ export default function MutualFundsPage() {
                             </div>
                         ))}
                     </div>
+
+                    {/* All Funds List */}
+                    <AllMutualFundsList initialFunds={initialFunds} />
+
+                    {/* SIP Calculator Section */}
+                    <div id="sip-calculator" className="mt-24">
+                        <div className="max-w-4xl mx-auto">
+                            <h2 className="text-3xl font-bold text-white mb-6 text-center">SIP Calculator</h2>
+                            <p className="text-gray-400 text-center mb-12">
+                                Plan your financial future with our advanced SIP calculator.
+                            </p>
+                            <SIPCalculator />
+                        </div>
+                    </div>
+
                 </div>
             </main>
             <Footer />

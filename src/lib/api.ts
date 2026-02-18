@@ -18,7 +18,7 @@ export async function fetchStockData(symbol: string): Promise<StockData[]> {
         const data: AlphaVantageResponse = await response.json();
 
         if (!data['Time Series (Daily)']) {
-            console.error('Invalid API response:', data);
+            console.warn('Using mock data for stock (API limit or invalid symbol)');
             return getMockStockData();
         }
 
@@ -451,3 +451,39 @@ function getMockRetailSales() {
         data: data.reverse()
     };
 }
+
+// Mutual Funds API
+
+export async function fetchMutualFundsList(limit = 100, offset = 0) {
+    try {
+        // The API returns an array of objects: { schemeCode: number, schemeName: string }
+        const response = await fetch(`https://api.mfapi.in/mf?limit=${limit}&offset=${offset}`, {
+            next: { revalidate: 3600 } // Cache for 1 hour
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch mutual funds list');
+
+        const data = await response.json();
+        return data; // Returns MutualFundScheme[]
+    } catch (error) {
+        console.error('Error fetching mutual funds list:', error);
+        return [];
+    }
+}
+
+export async function fetchMutualFundDetails(schemeCode: string | number) {
+    try {
+        const response = await fetch(`https://api.mfapi.in/mf/${schemeCode}`, {
+            next: { revalidate: 3600 }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch mutual fund details');
+
+        const data = await response.json();
+        return data; // Returns MutualFundDetails
+    } catch (error) {
+        console.error(`Error fetching mutual fund details for ${schemeCode}:`, error);
+        return null;
+    }
+}
+

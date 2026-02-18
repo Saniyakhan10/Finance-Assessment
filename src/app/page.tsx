@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import IntradayWidget from '@/components/IntradayWidget';
 import StocksSection from '@/components/StocksSection';
 import MutualFundsSection from '@/components/MutualFundsSection';
+import SIPSection from '@/components/SIPSection';
 import CommoditiesSection from '@/components/CommoditiesSection';
 import RetailSalesSection from '@/components/RetailSalesSection';
 import StockEventsSection from '@/components/StockEventsSection';
@@ -139,6 +140,7 @@ export default async function Home() {
           <IntradayWidget stockData={stockData} />
           <StocksSection data={topMovers} />
           <MutualFundsSection />
+          <SIPSection />
           <CommoditiesSection
             goldSpot={goldSpot}
             silverSpot={silverSpot}

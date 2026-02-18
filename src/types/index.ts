@@ -164,3 +164,25 @@ export interface RetailSalesData {
         value: string;
     }>;
 }
+
+export interface MutualFundScheme {
+    schemeCode: number;
+    schemeName: string;
+}
+
+export interface MutualFundDetails {
+    meta: {
+        fund_house: string;
+        scheme_type: string;
+        scheme_category: string;
+        scheme_code: number;
+        scheme_name: string;
+        isin_growth?: string;
+        isin_div_reinvestment?: string;
+    };
+    data: Array<{
+        date: string;
+        nav: string;
+    }>;
+    status: string;
+}

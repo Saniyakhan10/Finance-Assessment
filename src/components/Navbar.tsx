@@ -22,6 +22,7 @@ export default function Navbar() {
     { href: '#stocks', label: 'Stocks' },
     { href: '#ipo', label: 'IPO' },
     { href: '#mutual-funds', label: 'Mutual Funds' },
+    { href: '#sip-calculator', label: 'SIP Calculator' },
     { href: '#events', label: 'Events' },
     { href: '#news', label: 'News' },
   ];
